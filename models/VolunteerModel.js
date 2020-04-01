@@ -26,7 +26,7 @@ const VolunteerModel = new Schema(
     service_health: { type: [String], required: false },
 
     org_head: { type: String, required: false },
-    org_person: { type: String, required: true },
+    org_person: { type: String, required: false },
     org_nov: { type: String, required: false },
     org_reg: { type: String, required: false },
     org_type: { type: String, required: false },

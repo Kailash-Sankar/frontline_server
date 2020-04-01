@@ -4,6 +4,7 @@ const { body, validationResult } = require("express-validator");
 const apiResponse = require("../helpers/apiResponse");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const auth = require("../middlewares/jwt");
 
 exports.register = [
   // Validate fields.
@@ -128,8 +129,7 @@ exports.login = [
                 if (user.status) {
                   let userData = {
                     _id: user._id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
+                    name: user.fullName,
                     email: user.email
                   };
                   //Prepare JWT token for authentication
@@ -152,19 +152,49 @@ exports.login = [
                   );
                 }
               } else {
-                return apiResponse.unauthorizedResponse(
+                return apiResponse.validationErrorWithData(
                   res,
-                  "Email or Password wrong."
+                  "Email or Password wrong.",
+                  {}
                 );
               }
             });
           } else {
-            return apiResponse.unauthorizedResponse(
+            return apiResponse.validationErrorWithData(
               res,
-              "Email or Password wrong."
+              "Email or Password wrong.",
+              {}
             );
           }
         });
+      }
+    } catch (err) {
+      return apiResponse.ErrorResponse(res, err);
+    }
+  }
+];
+
+exports.check = [
+  auth,
+  function(req, res) {
+    try {
+      if (req.user) {
+        let userData = {
+          _id: req.user._id,
+          name: req.user.name,
+          email: req.user.email
+        };
+        return apiResponse.successResponseWithData(
+          res,
+          "Operation success",
+          userData
+        );
+      } else {
+        return apiResponse.validationErrorWithData(
+          res,
+          "Operation success",
+          {}
+        );
       }
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);

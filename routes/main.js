@@ -9,4 +9,7 @@ router.post("/volunteer/", MainController.VolunteerStore);
 // search
 router.post("/search", MainController.search);
 
+// status
+router.get("/status", MainController.status);
+
 module.exports = router;

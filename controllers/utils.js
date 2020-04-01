@@ -51,15 +51,24 @@ const buildQuery = (params) => {
 };
 
 // formatting for essential data response
-const VolunteerData = (data) => {
+function VolunteerData(data) {
   this.id = data.id;
   this.name = data.name;
   this.createdAt = data.createdAt;
-};
+}
+
+function formatStatusData(data) {
+  const res = {};
+  data.forEach((d) => {
+    res[d._id] = d.nov;
+  });
+  return res;
+}
 
 module.exports = {
   parseFormData,
   parseQueryData,
   VolunteerData,
-  buildQuery
+  buildQuery,
+  formatStatusData
 };

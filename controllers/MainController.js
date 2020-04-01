@@ -11,7 +11,8 @@ const {
   parseFormData,
   parseQueryData,
   buildQuery,
-  VolunteerData
+  VolunteerData,
+  formatStatusData
 } = require("./utils");
 
 // handle generic errors
@@ -76,6 +77,7 @@ exports.search = [
       const query = buildQuery(parsedData);
 
       console.log("query", query);
+      console.log("user info", req.user);
 
       Volunteer.find(query, { _id: 0 })
         //.sort({ updatedAt: -1 })
@@ -96,6 +98,32 @@ exports.search = [
         });
     } catch (err) {
       //throw error in json response with status 500.
+      return apiResponse.ErrorResponse(res, err);
+    }
+  }
+];
+
+exports.status = [
+  function(req, res) {
+    try {
+      const query = [{ $group: { _id: "$mode", nov: { $sum: 1 } } }];
+
+      Volunteer.aggregate(query).then((records) => {
+        if (records.length > 0) {
+          return apiResponse.successResponseWithData(
+            res,
+            "Operation success",
+            formatStatusData(records)
+          );
+        } else {
+          return apiResponse.successResponseWithData(
+            res,
+            "Operation success",
+            []
+          );
+        }
+      });
+    } catch (err) {
       return apiResponse.ErrorResponse(res, err);
     }
   }
