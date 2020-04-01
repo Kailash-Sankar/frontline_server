@@ -79,8 +79,9 @@ exports.search = [
       console.log("query", query);
       console.log("user info", req.user);
 
-      Volunteer.find(query, { _id: 0 })
-        //.sort({ updatedAt: -1 })
+      Volunteer.find(query, {}) // _id: 0
+        .sort({ updatedAt: -1 })
+        .limit(50)
         .then((records) => {
           if (records.length > 0) {
             return apiResponse.successResponseWithData(

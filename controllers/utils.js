@@ -25,9 +25,9 @@ const parseQueryData = (data) => {
   if ("mode" in data) {
     return parseFormData(data);
   } else {
-    // consider all fields
+    // consider all fields, ignore undefined values
     allFields.forEach((f) => {
-      if (f in data) {
+      if (f in data && data[f]) {
         res[f] = data[f];
       }
     });
