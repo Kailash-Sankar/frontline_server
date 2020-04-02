@@ -24,14 +24,31 @@ https://github.com/Kailash-Sankar/alfred
 - setup alfred
 - add config
 
-  frontline_server: {
-  path: `/<path_to_repo>/`,
-  name: 'frontline_server',
-  bind: '0.0.0.0:3080:80',
-  type: 'standard',
-  },
+        frontline_server: {
+            path: `/<path_to_repo>/`,
+            name: 'frontline_server',
+            bind: '0.0.0.0:3080:80',
+            type: 'standard',
+        },
 
-- alfred --serve frontline_server --dryrun
-- alfred --serve frontline_server
+  - alfred --serve frontline_server --dryrun
+  - alfred --serve frontline_server
+
+- for mongodb, created a mounted volume first
+- docker volume create mongodbdata
+- add below config to alfred
+
+
+        mongodb: {
+            image: 'mongo',
+            version: '4.2.1',
+            name: 'mongodb',
+            bind: '27017-27019:27017-27019',
+            type: 'db_hub',
+            volume: 'mongodbdata:/data/db'
+        }
+
+- alfred --serve mongodb --dryrun
+- alfred --serve mongodb
 
 Created with boilterplate: https://github.com/maitraysuthar/rest-api-nodejs-mongodb
