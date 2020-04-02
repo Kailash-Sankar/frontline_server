@@ -11,7 +11,7 @@ const parseFormData = (data) => {
   if ("mode" in data) {
     const fields = fieldMap[data.mode] || [];
     fields.forEach((f) => {
-      if (f in data) {
+      if (f in data && data[f]) {
         res[f] = data[f];
       }
     });
@@ -22,7 +22,7 @@ const parseFormData = (data) => {
 // builds and maps query data, ignores unpsecified values
 const parseQueryData = (data) => {
   const res = {};
-  if ("mode" in data) {
+  if ("mode" in data && data.mode != "all") {
     return parseFormData(data);
   } else {
     // consider all fields, ignore undefined values
