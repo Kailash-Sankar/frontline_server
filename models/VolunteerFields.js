@@ -13,6 +13,7 @@ const common = [
   "notes",
   "services",
   "act",
+  "availability",
 ];
 
 exports.fieldMap = {
