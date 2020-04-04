@@ -120,10 +120,9 @@ exports.login = [
         UserModel.findOne({ email: req.body.email }).then((user) => {
           if (user) {
             //Compare given password with db's hash.
-            bcrypt.compare(req.body.password, user.password, function(
-              err,
-              same
-            ) {
+            // convert back from base64
+            const pwd = Buffer.from(req.body.password, "base64").toString();
+            bcrypt.compare(pwd, user.password, function(err, same) {
               if (same) {
                 // Check User's account active or not.
                 if (user.status) {
