@@ -10,6 +10,7 @@ const volunteerFields = [
   "address",
   "region",
   "pin",
+  "area",
   "notes",
   "services",
   "act",
