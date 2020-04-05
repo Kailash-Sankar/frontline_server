@@ -1,15 +1,14 @@
 const {
-  fieldMap,
+  getFieldList,
   queryFormats,
   queryFieldFn,
-  allFields
-} = require("../models/VolunteerFields");
+} = require("../models/Fields");
 
 // builds and maps form data, ignores unpsecified values
 const parseFormData = (data) => {
   const res = {};
-  if ("mode" in data) {
-    const fields = fieldMap[data.mode] || [];
+  if ("act" in data) {
+    const fields = getFieldList(data.act);
     fields.forEach((f) => {
       if (f in data && data[f]) {
         res[f] = data[f];
@@ -20,13 +19,13 @@ const parseFormData = (data) => {
 };
 
 // builds and maps query data, ignores unpsecified values
+// redundant as above, but kept so for flexibility
 const parseQueryData = (data) => {
   const res = {};
-  if ("mode" in data && data.mode != "all") {
-    return parseFormData(data);
-  } else {
+  if ("act" in data) {
+    const fields = getFieldList(data.act);
     // consider all fields, ignore undefined values
-    allFields.forEach((f) => {
+    fields.forEach((f) => {
       if (f in data && data[f]) {
         res[f] = data[f];
       }
@@ -70,5 +69,5 @@ module.exports = {
   parseQueryData,
   VolunteerData,
   buildQuery,
-  formatStatusData
+  formatStatusData,
 };
