@@ -1,7 +1,7 @@
 // these fields should match the model and formData
 // if it doesn't match then add a mapping array/object set
 
-const common = [
+const volunteerFields = [
   "mode",
   "name",
   "email",
@@ -14,22 +14,34 @@ const common = [
   "services",
   "act",
   "availability",
+  "individual",
+  "organization",
 ];
 
-exports.fieldMap = {
-  individual: [...common, "individual"],
-  organization: [...common, "organization"],
-};
+const appealFields = ["act", "region", "pin", "services", "desc", "tags"];
+
+const fields = [...volunteerFields, ...appealFields];
 
 // build unique all fields list
-const tempMap = [];
-Object.values(this.fieldMap).forEach((ar) => {
-  ar.forEach((i) => {
-    tempMap[i] = 1;
-  });
+const tempMap = {};
+fields.forEach((f) => {
+  tempMap[f] = 1;
 });
+const allFields = Object.keys(tempMap) || [];
 
-exports.allFields = Object.keys(tempMap) || [];
+const actMap = {
+  volunteer: volunteerFields,
+  kind: volunteerFields,
+  appeal: appealFields,
+  all: allFields,
+};
+
+exports.getFieldList = (act = "all") => {
+  if (act in actMap) {
+    return actMap[act];
+  }
+  return [];
+};
 
 // volunteer query formats
 exports.queryFormats = {

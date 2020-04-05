@@ -32,7 +32,7 @@ const VolunteerModel = new Schema(
           },
         },
       ],
-      required: false,
+      required: true,
     },
 
     individual: {
@@ -60,6 +60,7 @@ const VolunteerModel = new Schema(
     },
 
     notes: { type: String, required: false },
+    publicise: { type: String, required: false, default: "n" },
   },
   { timestamps: true }
 );
