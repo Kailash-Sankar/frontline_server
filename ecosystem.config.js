@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "frontline_server",
       script: "bin/www",
-      instances: -2,
+      instances: 0, // run on all cores
       autorestart: true,
       watch: false,
       max_memory_restart: "500M",
