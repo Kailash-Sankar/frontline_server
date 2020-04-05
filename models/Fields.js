@@ -21,6 +21,8 @@ const volunteerFields = [
 
 const appealFields = ["act", "region", "pin", "services", "desc", "tags"];
 
+const requestFields = ["act", "name", "mobile", "co_mobile", "address", "area", "region", "pin", "desc"];
+
 const fields = [...volunteerFields, ...appealFields];
 
 // build unique all fields list
@@ -34,6 +36,7 @@ const actMap = {
   volunteer: volunteerFields,
   kind: volunteerFields,
   appeal: appealFields,
+  request: requestFields,
   all: allFields,
 };
 
