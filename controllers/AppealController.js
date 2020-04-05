@@ -59,7 +59,7 @@ exports.AppealStore = [
 ];
 
 exports.search = [
-  auth,
+  //auth, kept disabled for home page search, ideally we need another route for this
   function (req, res) {
     try {
       const parsedData = parseQueryData(req.body.query);
