@@ -10,6 +10,7 @@ mongoose.set("useFindAndModify", false);
 const {
   parseFormData,
   parseQueryData,
+  formatQueryLimit,
   buildQuery,
   VolunteerData,
   formatStatusData,
@@ -71,14 +72,15 @@ exports.search = [
   auth,
   function (req, res) {
     try {
-      const parsedData = parseQueryData(req.body);
+      const parsedData = parseQueryData(req.body.query);
       const query = buildQuery(parsedData);
+      const limit = formatQueryLimit(req.body.limit);
 
-      console.log("query", query);
+      console.log("query", query, limit);
 
       Volunteer.find(query, {}) // _id: 0
         .sort({ updatedAt: -1 })
-        .limit(50)
+        .limit(limit)
         .then((records) => {
           if (records.length > 0) {
             return apiResponse.successResponseWithData(

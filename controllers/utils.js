@@ -5,7 +5,7 @@ const {
 } = require("../models/Fields");
 
 // builds and maps form data, ignores unpsecified values
-const parseFormData = (data) => {
+const parseFormData = (data = {}) => {
   const res = {};
   if ("act" in data) {
     const fields = getFieldList(data.act);
@@ -20,7 +20,7 @@ const parseFormData = (data) => {
 
 // builds and maps query data, ignores unpsecified values
 // redundant as above, but kept so for flexibility
-const parseQueryData = (data) => {
+const parseQueryData = (data = {}) => {
   const res = {};
   if ("act" in data) {
     const fields = getFieldList(data.act);
@@ -64,10 +64,18 @@ function formatStatusData(data) {
   return res;
 }
 
+function formatQueryLimit(limit) {
+  if (Number.isInteger(limit) && limit > 0 && limit <= 50) {
+    return limit;
+  }
+  return 25;
+}
+
 module.exports = {
   parseFormData,
   parseQueryData,
   VolunteerData,
   buildQuery,
   formatStatusData,
+  formatQueryLimit,
 };

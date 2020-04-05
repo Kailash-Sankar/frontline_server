@@ -7,7 +7,12 @@ const auth = require("../middlewares/jwt");
 var mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
 
-const { parseFormData, parseQueryData, buildQuery } = require("./utils");
+const {
+  parseFormData,
+  parseQueryData,
+  buildQuery,
+  formatQueryLimit,
+} = require("./utils");
 
 // handle generic errors
 const valErrorHandler = (res, errors) =>
@@ -57,15 +62,16 @@ exports.search = [
   auth,
   function (req, res) {
     try {
-      const parsedData = parseQueryData(req.body);
+      const parsedData = parseQueryData(req.body.query);
       const query = buildQuery(parsedData);
+      const limit = formatQueryLimit(req.body.limit);
 
-      console.log("query", query);
+      console.log("query", query, limit);
       console.log("user info", req.user);
 
       Appeal.find(query, {}) // _id: 0
         .sort({ updatedAt: -1 })
-        .limit(50)
+        .limit(limit)
         .then((records) => {
           if (records.length > 0) {
             return apiResponse.successResponseWithData(
