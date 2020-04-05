@@ -15,6 +15,7 @@ const VolunteerModel = new Schema(
 
     region: { type: [String], required: true },
     pin: { type: String, required: true },
+    area: { type: String, required: true },
 
     services: {
       type: [
