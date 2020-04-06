@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const RequestModel = new Schema(
   {
-    act: { type: String, required: false },
+    act: { type: String, required: true },
     name: { type: String, required: true },
     mobile: { type: String, require: true },
 
