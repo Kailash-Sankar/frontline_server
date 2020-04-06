@@ -15,7 +15,7 @@ const VolunteerModel = new Schema(
 
     region: { type: [String], required: true },
     pin: { type: String, required: true },
-    area: { type: String, required: true },
+    area: { type: String, required: false },
 
     services: {
       type: [
@@ -62,6 +62,10 @@ const VolunteerModel = new Schema(
 
     notes: { type: String, required: false },
     publicise: { type: String, required: false, default: "n" },
+    ref: {
+      type: { appeal_id: { type: String, required: false } },
+      required: false,
+    },
   },
   { timestamps: true }
 );

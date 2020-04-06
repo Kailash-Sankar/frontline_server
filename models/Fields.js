@@ -17,11 +17,22 @@ const volunteerFields = [
   "availability",
   "individual",
   "organization",
+  "ref",
 ];
 
 const appealFields = ["act", "region", "pin", "services", "desc", "tags"];
 
-const requestFields = ["act", "name", "mobile", "co_mobile", "address", "area", "region", "pin", "desc"];
+const requestFields = [
+  "act",
+  "name",
+  "mobile",
+  "co_mobile",
+  "address",
+  "area",
+  "region",
+  "pin",
+  "desc",
+];
 
 const fields = [...volunteerFields, ...appealFields];
 
