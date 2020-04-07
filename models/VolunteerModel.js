@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
 
 const Schema = mongoose.Schema;
 
@@ -69,5 +70,7 @@ const VolunteerModel = new Schema(
   },
   { timestamps: true }
 );
+
+VolunteerModel.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Volunteer", VolunteerModel);

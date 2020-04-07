@@ -64,11 +64,12 @@ function formatStatusData(data) {
   return res;
 }
 
+// max 100
 function formatQueryLimit(limit) {
-  if (Number.isInteger(limit) && limit > 0 && limit <= 50) {
+  if (Number.isInteger(limit) && limit > 0 && limit <= 100) {
     return limit;
   }
-  return 25;
+  return 10; // default limit
 }
 
 module.exports = {

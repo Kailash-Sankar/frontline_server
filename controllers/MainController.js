@@ -23,16 +23,17 @@ const valErrorHandler = (res, errors) =>
 // create a new volunteer record
 exports.VolunteerStore = [
   //auth,
-  body("mobile", "Mobile must not be empty.")
-    .isLength({ min: 1 })
-    .trim()
+  body("mobile", "Mobile must not be empty.").isLength({ min: 1 }).trim(),
+  /*  
+    unique mobile number validation is not required now
     .custom((value, { req }) => {
       return Volunteer.findOne({ mobile: value }).then((record) => {
         if (record) {
           return Promise.reject("This mobile number is already registered.");
         }
       });
-    }),
+    }), */
+
   body("name", "Name must not be empty.").isLength({ min: 1 }).trim(),
   //sanitizeBody("*").escape(),
   (req, res) => {
@@ -75,27 +76,27 @@ exports.search = [
       const parsedData = parseQueryData(req.body.query);
       const query = buildQuery(parsedData);
       const limit = formatQueryLimit(req.body.limit);
+      const page = req.body.page || 1;
 
-      console.log("query", query, limit);
+      console.log("query", query, limit, page);
 
-      Volunteer.find(query, {}) // _id: 0
-        .sort({ updatedAt: -1 })
-        .limit(limit)
-        .then((records) => {
-          if (records.length > 0) {
-            return apiResponse.successResponseWithData(
-              res,
-              "Operation success",
-              records
-            );
-          } else {
-            return apiResponse.successResponseWithData(
-              res,
-              "Operation success",
-              []
-            );
-          }
-        });
+      Volunteer.paginate(query, {
+        page,
+        limit,
+        sort: { updatedAt: -1 },
+      }).then((records) => {
+        if (records.total > 0) {
+          return apiResponse.successResponseWithData(
+            res,
+            "Operation success",
+            records
+          );
+        } else {
+          return apiResponse.successResponseWithData(res, "Operation success", {
+            docs: [],
+          });
+        }
+      });
     } catch (err) {
       console.log("errors", err);
       //throw error in json response with status 500.

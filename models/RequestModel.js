@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
 
 const Schema = mongoose.Schema;
 
@@ -12,10 +13,12 @@ const RequestModel = new Schema(
     area: { type: String, required: true },
     region: { type: [String], required: true },
     pin: { type: String, required: true },
-    
+
     desc: { type: String, required: true },
   },
   { timestamps: true }
 );
+
+RequestModel.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Request", RequestModel);

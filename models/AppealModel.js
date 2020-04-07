@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate");
 
 const Schema = mongoose.Schema;
 
@@ -30,5 +31,7 @@ const AppealModel = new Schema(
   },
   { timestamps: true }
 );
+
+AppealModel.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Appeal", AppealModel);
