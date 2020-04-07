@@ -26,7 +26,9 @@ router.get("/appeal/status", AppealController.status);
 router.post("/request", RequestController.RequestStore);
 // search
 router.post("/request/search", RequestController.search);
-// status
+// overall status
 router.get("/request/status", RequestController.status);
+// Update status of the request
+router.put("/request/update_status", RequestController.update_status);
 
 module.exports = router;
