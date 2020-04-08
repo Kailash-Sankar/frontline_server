@@ -1,10 +1,10 @@
-const { chai, server, should } = require("./testConfig");
+const { chai, server } = require("./testConfig");
 const UserModel = require("../models/UserModel");
 
 describe("Auth", () => {
   // Before each test we empty the database
   before((done) => {
-    UserModel.deleteMany({}, (err) => {
+    UserModel.deleteMany({}, () => {
       done();
     });
   });
@@ -14,7 +14,7 @@ describe("Auth", () => {
     firstName: "test",
     lastName: "testing",
     password: "Test@123",
-    email: "test@test12345.com"
+    email: "test@test12345.com",
   };
 
   /*
