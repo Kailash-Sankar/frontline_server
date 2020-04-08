@@ -1,5 +1,7 @@
 # Frontline volunteer app server
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e8c2c86f24df476cae7476c86a92bd0d)](https://app.codacy.com/manual/Kailash-Sankar/frontline_server?utm_source=github.com&utm_medium=referral&utm_content=Kailash-Sankar/frontline_server&utm_campaign=Badge_Grade_Dashboard)
+
 ## To setup locally
 
 - Clone the repo
