@@ -18,9 +18,10 @@ const volunteerFields = [
   "individual",
   "organization",
   "ref",
+  "createdAt"
 ];
 
-const appealFields = ["act", "region", "pin", "services", "desc", "tags"];
+const appealFields = ["act", "region", "pin", "services", "desc", "tags", "createdAt"];
 
 const requestFields = [
   "act",
@@ -32,6 +33,7 @@ const requestFields = [
   "region",
   "pin",
   "desc",
+  "createdAt"
 ];
 
 const fields = [...volunteerFields, ...appealFields];
@@ -65,9 +67,11 @@ exports.queryFormats = {
   service_entrepreneurial: "in",
   service_essential: "in",
   service_health: "in",
+  createdAt: 'between',
 };
 
 exports.queryFieldFn = {
   default: (value) => value,
   in: (value) => ({ $in: value }),
+  between: (value) => ({$gte: value[0], $lt: value[1]})
 };
