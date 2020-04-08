@@ -1,5 +1,6 @@
 const {
   getFieldList,
+  getQueryFieldList,
   queryFormats,
   queryFieldFn,
 } = require("../models/Fields");
@@ -23,7 +24,7 @@ const parseFormData = (data = {}) => {
 const parseQueryData = (data = {}) => {
   const res = {};
   if ("act" in data) {
-    const fields = getFieldList(data.act);
+    const fields = getQueryFieldList(data.act);
     // consider all fields, ignore undefined values
     fields.forEach((f) => {
       if (f in data && data[f]) {

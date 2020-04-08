@@ -18,10 +18,18 @@ const volunteerFields = [
   "individual",
   "organization",
   "ref",
-  "createdAt"
+  "createdAt",
 ];
 
-const appealFields = ["act", "region", "pin", "services", "desc", "tags", "createdAt"];
+const appealFields = [
+  "act",
+  "region",
+  "pin",
+  "services",
+  "desc",
+  "tags",
+  "createdAt",
+];
 
 const requestFields = [
   "act",
@@ -33,8 +41,10 @@ const requestFields = [
   "region",
   "pin",
   "desc",
-  "createdAt"
 ];
+
+// fields which are only applicable to queries
+const queryFields = ["createdAt"];
 
 const fields = [...volunteerFields, ...appealFields];
 
@@ -60,6 +70,13 @@ exports.getFieldList = (act = "all") => {
   return [];
 };
 
+exports.getQueryFieldList = (act = "all") => {
+  if (act in actMap) {
+    return actMap[act].concat(queryFields);
+  }
+  return [];
+};
+
 // volunteer query formats
 exports.queryFormats = {
   region: "in",
@@ -67,11 +84,11 @@ exports.queryFormats = {
   service_entrepreneurial: "in",
   service_essential: "in",
   service_health: "in",
-  createdAt: 'between',
+  createdAt: "between",
 };
 
 exports.queryFieldFn = {
   default: (value) => value,
   in: (value) => ({ $in: value }),
-  between: (value) => ({$gte: value[0], $lt: value[1]})
+  between: (value) => ({ $gte: value[0], $lt: value[1] }),
 };
