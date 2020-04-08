@@ -5,10 +5,6 @@ RUN npm install
 RUN npm install pm2 -g
 COPY . .
 
-# temp workaround
-RUN rm .env
-RUN mv .env.docker .env
-
 ENV PORT 80
 ENV NODE_ENV production
 EXPOSE 80
