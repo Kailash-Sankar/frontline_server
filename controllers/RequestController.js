@@ -64,28 +64,27 @@ exports.search = [
       const parsedData = parseQueryData(req.body.query);
       const query = buildQuery(parsedData);
       const limit = formatQueryLimit(req.body.limit);
+      const page = req.body.page || 1;
 
-      console.log("query", query, limit);
-      console.log("user info", req.user);
+      console.log("query", query, limit, page);
 
-      Request.find(query, {}) // _id: 0
-        .sort({ updatedAt: -1 })
-        .limit(limit)
-        .then((records) => {
-          if (records.length > 0) {
-            return apiResponse.successResponseWithData(
-              res,
-              "Operation success",
-              records
-            );
-          } else {
-            return apiResponse.successResponseWithData(
-              res,
-              "Operation success",
-              []
-            );
-          }
-        });
+      Request.paginate(query, {
+        page,
+        limit,
+        sort: { updatedAt: -1 },
+      }).then((records) => {
+        if (records.total > 0) {
+          return apiResponse.successResponseWithData(
+            res,
+            "Operation success",
+            records
+          );
+        } else {
+          return apiResponse.successResponseWithData(res, "Operation success", {
+            docs: [],
+          });
+        }
+      });
     } catch (err) {
       console.log("errors", err);
       //throw error in json response with status 500.
