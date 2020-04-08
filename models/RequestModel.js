@@ -15,6 +15,7 @@ const RequestModel = new Schema(
     pin: { type: String, required: true },
 
     desc: { type: String, required: true },
+    status: { type: String, required: true, default: "open" },
   },
   { timestamps: true }
 );

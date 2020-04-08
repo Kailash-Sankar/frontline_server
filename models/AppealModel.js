@@ -28,6 +28,7 @@ const AppealModel = new Schema(
     },
     desc: { type: String, required: false },
     tags: { type: [String], required: false },
+    status: { type: String, required: true, default: "open" },
   },
   { timestamps: true }
 );

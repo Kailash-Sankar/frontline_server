@@ -120,3 +120,30 @@ exports.status = [
     }
   },
 ];
+
+// Update the status of a appeal record
+exports.updateStatus = [
+  // auth,
+  function (req, res) {
+    console.log("appeal body", req.body)
+    const query = req.params.id
+    const status = req.body.status
+
+    Appeal.findByIdAndUpdate(query, { status: status }, { new: true },
+      (err, record) => {
+        if (err) {
+          console.log("errors", err);
+          //throw error in json response with status 500.
+          return apiResponse.ErrorResponse(res, err);
+        } else {
+          console.log("updated record", record);
+          console.log("updated record length", record.length);
+          return apiResponse.successResponseWithData(
+            res,
+            "Operation success",
+            record
+          );
+        }
+      });
+  },
+];

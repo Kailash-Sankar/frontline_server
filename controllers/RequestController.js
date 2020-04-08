@@ -18,7 +18,7 @@ const {
 const valErrorHandler = (res, errors) =>
   apiResponse.validationErrorWithData(res, "Validation Error.", errors.array());
 
-// create a new volunteer record
+// create a new request record
 exports.RequestStore = [
   body("region", "Region must not be empty").isLength({ min: 1 }),
   body("pin", "Pin must not be empty.").isLength({ min: 1 }).trim(),
@@ -117,5 +117,32 @@ exports.status = [
       console.log("errors", err);
       return apiResponse.ErrorResponse(res, err);
     }
+  },
+];
+
+// Update the status of a request record
+exports.updateStatus = [
+  // auth,
+  function (req, res) {
+    console.log("request body", req.body)
+    const query = req.params.id
+    const status = req.body.status
+
+    Request.findByIdAndUpdate(query, { status: status }, { new: true },
+      (err, record) => {
+        if (err) {
+          console.log("errors", err);
+          //throw error in json response with status 500.
+          return apiResponse.ErrorResponse(res, err);
+        } else {
+          console.log("updated record", record);
+          console.log("updated record length", record.length);
+          return apiResponse.successResponseWithData(
+            res,
+            "Operation success",
+            record
+          );
+        }
+      });
   },
 ];
