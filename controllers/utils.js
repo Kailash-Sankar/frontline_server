@@ -69,7 +69,7 @@ function formatQueryLimit(limit) {
   if (Number.isInteger(limit) && limit > 0 && limit <= 100) {
     return limit;
   }
-  return 10; // default limit
+  return 20; // default limit
 }
 
 module.exports = {
