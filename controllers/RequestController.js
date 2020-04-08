@@ -121,14 +121,14 @@ exports.status = [
 ];
 
 // Update the status of a request record
-exports.update_status = [
+exports.updateStatus = [
   // auth,
   function (req, res) {
     console.log("request body", req.body)
-    const query = req.body._id
+    const query = req.params.id
     const status = req.body.status
 
-    Request.findByIdAndUpdate(query, { status: status }, { new: true},
+    Request.findByIdAndUpdate(query, { status: status }, { new: true },
       (err, record) => {
         if (err) {
           console.log("errors", err);
