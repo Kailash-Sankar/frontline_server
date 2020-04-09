@@ -18,8 +18,6 @@ const volunteerFields = [
   "individual",
   "organization",
   "ref",
-  "status",
-  "createdAt",
 ];
 
 const appealFields = [
@@ -29,8 +27,6 @@ const appealFields = [
   "services",
   "desc",
   "tags",
-  "status",
-  "createdAt",
 ];
 
 const requestFields = [
@@ -43,11 +39,10 @@ const requestFields = [
   "region",
   "pin",
   "desc",
-  "status",
 ];
 
 // fields which are only applicable to queries
-const queryFields = ["createdAt"];
+const queryFields = ["createdAt", "status"];
 
 const fields = [...volunteerFields, ...appealFields];
 
@@ -88,7 +83,6 @@ exports.queryFormats = {
   service_essential: "in",
   service_health: "in",
   createdAt: "between",
-  status: "in",
 };
 
 exports.queryFieldFn = {
