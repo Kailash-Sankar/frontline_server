@@ -20,6 +20,8 @@ router.put("/update/:id", MainController.updateStatus);
 router.post("/appeal", AppealController.AppealStore);
 // search
 router.post("/appeal/search", AppealController.search);
+// export
+router.post("/appeal/export", AppealController.export);
 // overall status
 router.get("/appeal/status", AppealController.status);
 // Update the status of a appeal

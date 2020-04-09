@@ -9,6 +9,7 @@ const {
   handleSave,
   handleStatus,
   handleStatusUpdate,
+  handleExport,
 } = require("../utils");
 
 // create a new appeal record
@@ -26,6 +27,13 @@ exports.search = [
   //auth, kept disabled for home page search, ideally we need another route for this
   function (req, res) {
     handleSearch(req, res, Appeal);
+  },
+];
+
+exports.export = [
+  //auth,
+  function (req, res) {
+    handleExport(req, res, Appeal);
   },
 ];
 
