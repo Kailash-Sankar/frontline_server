@@ -18,6 +18,7 @@ const volunteerFields = [
   "individual",
   "organization",
   "ref",
+  "status",
   "createdAt",
 ];
 
@@ -28,6 +29,7 @@ const appealFields = [
   "services",
   "desc",
   "tags",
+  "status",
   "createdAt",
 ];
 
@@ -41,6 +43,7 @@ const requestFields = [
   "region",
   "pin",
   "desc",
+  "status",
 ];
 
 // fields which are only applicable to queries
@@ -85,6 +88,7 @@ exports.queryFormats = {
   service_essential: "in",
   service_health: "in",
   createdAt: "between",
+  status: "in",
 };
 
 exports.queryFieldFn = {
