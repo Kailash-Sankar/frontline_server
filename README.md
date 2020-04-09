@@ -25,38 +25,11 @@
     docker build  -t frontline_server:latest .
     docker run -d --restart=always --name=frontline_server -p 0.0.0.0:3080:80 -v /<path_to_env>/.env:/app/.env frontline_server:latest
 
-## alfred config
+    Note: automate some of the manual steps with alfred for dev environments
+    it's a hacked up cli util to avoid typing large docker commands one by one,
+    help guide is in the repo: https://github.com/Kailash-Sankar/alfred
 
-    # it's a hacked up cli util to avoid typing large docker commands one by one.
-    # help guide is in the repo: https://github.com/Kailash-Sankar/alfred
-
-    # create config like below or customize the steps in alfred services
-    frontline_server: {
-        path: `/<path_to_repo>/`,
-        name: 'frontline_server',
-        bind: '0.0.0.0:3080:80',
-        type: 'standard',
-    },
-
-    alfred --serve frontline_server --dryrun
-    alfred --serve frontline_server
-
-## db setup
-    # for mongodb, created a mounted volume first
-    # docker volume create mongodbdata
-    # add below config to alfred
-
-
-        mongodb: {
-            image: 'mongo',
-            version: '4.2.1',
-            name: 'mongodb',
-            bind: '27017-27019:27017-27019',
-            type: 'db_hub',
-            volume: 'mongodbdata:/data/db'
-        }
-
-    alfred --serve mongodb --dryrun
-    alfred --serve mongodb
+## mongo db instructions
+    https://github.com/Kailash-Sankar/study_notes/blob/master/docker.md
 
 Created with boilterplate: https://github.com/maitraysuthar/rest-api-nodejs-mongodb
