@@ -43,6 +43,7 @@ function handleExport(req, res, Model) {
 
     console.log("export", query);
     Model.find(query, excludeKeys)
+      .sort({ createdAt: -1 })
       .limit(exportLimit)
       .then((records) => {
         if (records.length > 0) {

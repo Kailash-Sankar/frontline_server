@@ -30,8 +30,9 @@ exports.search = [
   },
 ];
 
+// export data
 exports.export = [
-  //auth,
+  auth,
   function (req, res) {
     handleExport(req, res, Appeal);
   },

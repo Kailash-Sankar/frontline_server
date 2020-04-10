@@ -8,6 +8,7 @@ mongoose.set("useFindAndModify", false);
 
 const {
   handleSearch,
+  handleExport,
   handleSave,
   handleStatus,
   handleStatusUpdate,
@@ -27,6 +28,14 @@ exports.search = [
   auth,
   function (req, res) {
     handleSearch(req, res, Volunteer);
+  },
+];
+
+// export data
+exports.export = [
+  auth,
+  function (req, res) {
+    handleExport(req, res, Volunteer);
   },
 ];
 
