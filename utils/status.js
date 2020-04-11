@@ -4,7 +4,6 @@ const apiResponse = require("../helpers/apiResponse");
 function handleStatus(res, query, Model) {
   try {
     Model.aggregate(query).then((records) => {
-      console.log("status", records);
       if (records.length > 0) {
         return apiResponse.successResponseWithData(
           res,

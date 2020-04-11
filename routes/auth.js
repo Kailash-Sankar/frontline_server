@@ -6,5 +6,6 @@ var router = express.Router();
 router.post("/register", AuthController.register);
 router.post("/login", AuthController.login);
 router.post("/check", AuthController.check);
+router.get("/init", AuthController.init);
 
 module.exports = router;

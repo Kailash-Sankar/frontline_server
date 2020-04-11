@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middlewares/jwt");
 
 exports.register = [
+  auth,
   // Validate fields.
   body("firstName")
     .isLength({ min: 1 })
@@ -44,6 +45,14 @@ exports.register = [
   // Process request after validation and sanitization.
   (req, res) => {
     try {
+      // check if user is authorized to create new accounts
+      if (req.user.role != "admin") {
+        return apiResponse.unauthorizedResponse(
+          res,
+          "Missing privileges. Please contact admin."
+        );
+      }
+
       // Extract the validation errors from a request.
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -55,20 +64,19 @@ exports.register = [
         );
       } else {
         //hash input password
-        bcrypt.hash(req.body.password, 10, function(err, hash) {
+        bcrypt.hash(req.body.password, 10, function (err, hash) {
           // Create User object with escaped and trimmed data
           var user = new UserModel({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
-            password: hash
+            password: hash,
           });
 
           console.log("user", user);
 
           // Save user.
-          user.save(function(err) {
-            console.log("saved", err);
+          user.save(function (err) {
             if (err) {
               return apiResponse.ErrorResponse(res, err);
             }
@@ -76,9 +84,8 @@ exports.register = [
               _id: user._id,
               firstName: user.firstName,
               lastName: user.lastName,
-              email: user.email
+              email: user.email,
             };
-            console.log("out", userData);
             return apiResponse.successResponseWithData(
               res,
               "Registration Success.",
@@ -91,7 +98,7 @@ exports.register = [
       //throw error in json response with status 500.
       return apiResponse.ErrorResponse(res, err);
     }
-  }
+  },
 ];
 
 exports.login = [
@@ -122,19 +129,20 @@ exports.login = [
             //Compare given password with db's hash.
             // convert back from base64
             const pwd = Buffer.from(req.body.password, "base64").toString();
-            bcrypt.compare(pwd, user.password, function(err, same) {
+            bcrypt.compare(pwd, user.password, function (err, same) {
               if (same) {
                 // Check User's account active or not.
                 if (user.status) {
                   let userData = {
                     _id: user._id,
                     name: user.fullName,
-                    email: user.email
+                    email: user.email,
+                    role: user.role || "na",
                   };
                   //Prepare JWT token for authentication
                   const jwtPayload = userData;
                   const jwtData = {
-                    expiresIn: process.env.JWT_TIMEOUT_DURATION
+                    expiresIn: process.env.JWT_TIMEOUT_DURATION,
                   };
                   const secret = process.env.JWT_SECRET;
                   //Generated JWT token with Payload and secret.
@@ -170,18 +178,18 @@ exports.login = [
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);
     }
-  }
+  },
 ];
 
 exports.check = [
   auth,
-  function(req, res) {
+  function (req, res) {
     try {
       if (req.user) {
         let userData = {
           _id: req.user._id,
           name: req.user.name,
-          email: req.user.email
+          email: req.user.email,
         };
         return apiResponse.successResponseWithData(
           res,
@@ -198,5 +206,57 @@ exports.check = [
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);
     }
-  }
+  },
+];
+
+exports.init = [
+  function (req, res) {
+    try {
+      if (process.env.ADMIN_EMAIL && process.env.ADMIN_PWD) {
+        // check if user already exists
+        UserModel.findOne({ email: process.env.ADMIN_EMAIL }).then((user) => {
+          if (user) {
+            return apiResponse.successResponseWithData(
+              res,
+              "Already Initializated, contact admin for more info.",
+              {}
+            );
+          } else {
+            // create admin account
+            bcrypt.hash(process.env.ADMIN_PWD, 10, function (err, hash) {
+              const user = new UserModel({
+                firstName: "Admin",
+                lastName: "User",
+                email: process.env.ADMIN_EMAIL,
+                password: hash,
+                role: "admin",
+              });
+
+              // Save user.
+              user.save(function (err) {
+                if (err) {
+                  console.log("error", err);
+                  return apiResponse.ErrorResponse(res, err);
+                }
+                return apiResponse.successResponseWithData(
+                  res,
+                  "Setup complete.",
+                  {}
+                );
+              });
+            });
+          }
+        });
+      } else {
+        return apiResponse.successResponseWithData(
+          res,
+          "Missing env, contact admin for more info.",
+          {}
+        );
+      }
+    } catch (err) {
+      console.log("inti error", err);
+      return apiResponse.ErrorResponse(res, err);
+    }
+  },
 ];
