@@ -1,6 +1,6 @@
 # Frontline volunteer app server
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e8c2c86f24df476cae7476c86a92bd0d)](https://app.codacy.com/manual/Kailash-Sankar/frontline_server?utm_source=github.com&utm_medium=referral&utm_content=Kailash-Sankar/frontline_server&utm_campaign=Badge_Grade_Dashboard) [![Known Vulnerabilities](https://snyk.io/test/github/Kailash-Sankar/frontline_server/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Kailash-Sankar/frontline_server?targetFile=package.json) ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/kailashsankar/frontline_server)
@@ -49,6 +49,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://wolfs-bane.herokuapp.com/"><img src="https://avatars0.githubusercontent.com/u/3972209?v=4" width="100px;" alt=""/><br /><sub><b>Kailash Sankar</b></sub></a><br /><a href="https://github.com/Kailash-Sankar/frontline_server/commits?author=Kailash-Sankar" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/rtkanan"><img src="https://avatars3.githubusercontent.com/u/1004509?v=4" width="100px;" alt=""/><br /><sub><b>Kannan Nagarajan</b></sub></a><br /><a href="https://github.com/Kailash-Sankar/frontline_server/commits?author=rtkanan" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/kishorkumarj"><img src="https://avatars1.githubusercontent.com/u/3972218?v=4" width="100px;" alt=""/><br /><sub><b>Kishor K Jagadeesan</b></sub></a><br /><a href="https://github.com/Kailash-Sankar/frontline_server/commits?author=kishorkumarj" title="Code">💻</a></td>
   </tr>
 </table>
 
