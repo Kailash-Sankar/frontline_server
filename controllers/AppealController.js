@@ -1,149 +1,55 @@
 const Appeal = require("../models/AppealModel");
-
-const { body, validationResult } = require("express-validator");
-const apiResponse = require("../helpers/apiResponse");
+const { body } = require("express-validator");
 const auth = require("../middlewares/jwt");
-
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
 
 const {
-  parseFormData,
-  parseQueryData,
-  buildQuery,
-  formatQueryLimit,
-} = require("./utils");
+  handleSearch,
+  handleSave,
+  handleStatus,
+  handleStatusUpdate,
+  handleExport,
+} = require("../utils");
 
-// handle generic errors
-const valErrorHandler = (res, errors) =>
-  apiResponse.validationErrorWithData(res, "Validation Error.", errors.array());
-
-// create a new volunteer record
+// create a new appeal record
 exports.AppealStore = [
   auth,
   body("region", "Region must not be empty").isLength({ min: 1 }),
   body("pin", "Pin must not be empty.").isLength({ min: 1 }).trim(),
-  //sanitizeBody("*").escape(),
   (req, res) => {
-    console.log("Appeal post", req.body);
-    try {
-      const errors = validationResult(req);
-      const parsedData = parseFormData(req.body);
-
-      console.log("appeal", parsedData);
-
-      let appealObj = new Appeal(parsedData);
-      console.log("appeal", appealObj);
-
-      if (!errors.isEmpty()) {
-        return valErrorHandler(res, errors);
-      } else {
-        //Save
-        appealObj.save(function (err) {
-          if (err) {
-            return apiResponse.ErrorResponse(res, err);
-          }
-          return apiResponse.successResponseWithData(
-            res,
-            "Appeal added successfully.",
-            {}
-          );
-        });
-      }
-    } catch (err) {
-      console.log("errors", err);
-      //throw error in json response with status 500.
-      return apiResponse.ErrorResponse(res, err);
-    }
+    handleSave(req, res, Appeal);
   },
 ];
 
+// search appeals
 exports.search = [
   //auth, kept disabled for home page search, ideally we need another route for this
   function (req, res) {
-    try {
-      const parsedData = parseQueryData(req.body.query);
-      const query = buildQuery(parsedData);
-      const limit = formatQueryLimit(req.body.limit);
-      const page = req.body.page || 1;
-
-      console.log("query", query, limit, page);
-
-      Appeal.paginate(query, {
-        page,
-        limit,
-        sort: { updatedAt: -1 },
-      }).then((records) => {
-        if (records.total > 0) {
-          return apiResponse.successResponseWithData(
-            res,
-            "Operation success",
-            records
-          );
-        } else {
-          return apiResponse.successResponseWithData(res, "Operation success", {
-            docs: [],
-          });
-        }
-      });
-    } catch (err) {
-      console.log("errors", err);
-      //throw error in json response with status 500.
-      return apiResponse.ErrorResponse(res, err);
-    }
+    handleSearch(req, res, Appeal);
   },
 ];
 
+// export data
+exports.export = [
+  auth,
+  function (req, res) {
+    handleExport(req, res, Appeal);
+  },
+];
+
+// get count grouped by status
 exports.status = [
   function (req, res) {
-    try {
-      Appeal.find({})
-        .count()
-        .then((count) => {
-          if (count) {
-            return apiResponse.successResponseWithData(
-              res,
-              "Operation success",
-              { appeals: count }
-            );
-          } else {
-            return apiResponse.successResponseWithData(
-              res,
-              "Operation success",
-              { appeals: 0 }
-            );
-          }
-        });
-    } catch (err) {
-      console.log("errors", err);
-      return apiResponse.ErrorResponse(res, err);
-    }
+    const query = [{ $group: { _id: "$status", status: { $sum: 1 } } }];
+    handleStatus(res, query, Appeal);
   },
 ];
 
 // Update the status of a appeal record
 exports.updateStatus = [
-  // auth,
+  auth,
   function (req, res) {
-    console.log("appeal body", req.body)
-    const query = req.params.id
-    const status = req.body.status
-
-    Appeal.findByIdAndUpdate(query, { status: status }, { new: true },
-      (err, record) => {
-        if (err) {
-          console.log("errors", err);
-          //throw error in json response with status 500.
-          return apiResponse.ErrorResponse(res, err);
-        } else {
-          console.log("updated record", record);
-          console.log("updated record length", record.length);
-          return apiResponse.successResponseWithData(
-            res,
-            "Operation success",
-            record
-          );
-        }
-      });
+    handleStatusUpdate(req, res, Appeal);
   },
 ];

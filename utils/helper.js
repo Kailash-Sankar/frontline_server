@@ -1,3 +1,5 @@
+const apiResponse = require("../helpers/apiResponse");
+
 const {
   getFieldList,
   getQueryFieldList,
@@ -60,7 +62,7 @@ function VolunteerData(data) {
 function formatStatusData(data) {
   const res = {};
   data.forEach((d) => {
-    res[d._id] = d.nov;
+    res[d._id] = d.status || d.nov; // temp workaround
   });
   return res;
 }
@@ -73,6 +75,10 @@ function formatQueryLimit(limit) {
   return 20; // default limit
 }
 
+// handle generic errors
+const valErrorHandler = (res, errors) =>
+  apiResponse.validationErrorWithData(res, "Validation Error.", errors.array());
+
 module.exports = {
   parseFormData,
   parseQueryData,
@@ -80,4 +86,5 @@ module.exports = {
   buildQuery,
   formatStatusData,
   formatQueryLimit,
+  valErrorHandler,
 };
