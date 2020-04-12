@@ -11,7 +11,7 @@ function handleSearch(req, res, Model) {
     const limit = formatQueryLimit(req.body.limit);
     const page = req.body.page || 1;
 
-    console.log("search", query, limit, page);
+    //console.log("search", query, limit, page);
 
     Model.paginate(query, {
       page,
@@ -41,7 +41,7 @@ function handleExport(req, res, Model) {
     const parsedData = parseQueryData(req.body.query);
     const query = buildQuery(parsedData);
 
-    console.log("export", query);
+    //console.log("export", query);
     Model.find(query, excludeKeys)
       .sort({ createdAt: -1 })
       .limit(exportLimit)
