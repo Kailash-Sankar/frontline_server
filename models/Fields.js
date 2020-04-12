@@ -18,7 +18,6 @@ const volunteerFields = [
   "individual",
   "organization",
   "ref",
-  "createdAt",
 ];
 
 const appealFields = [
@@ -28,7 +27,6 @@ const appealFields = [
   "services",
   "desc",
   "tags",
-  "createdAt",
 ];
 
 const requestFields = [
@@ -44,7 +42,7 @@ const requestFields = [
 ];
 
 // fields which are only applicable to queries
-const queryFields = ["createdAt"];
+const queryFields = ["createdAt", "status"];
 
 const fields = [...volunteerFields, ...appealFields];
 
