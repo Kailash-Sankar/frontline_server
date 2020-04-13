@@ -16,6 +16,9 @@
 
     # for nodemon, otherwise npm start
     npm run dev
+    
+    # create admin account after setting up client and server
+    curl <server>/api/auth/init
 
 ## from docker hub
 
