@@ -59,3 +59,13 @@
 
     # create admin account after setting up client and server
     curl <server_url>/api/auth/init
+
+## Pulling updates
+    # cd to the repo folder
+    git pull origin master
+
+    # install dependency changes
+    npm install 
+    
+    # restart servers
+    pm2 restart all
