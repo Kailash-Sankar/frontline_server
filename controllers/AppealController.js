@@ -24,9 +24,16 @@ exports.AppealStore = [
 
 // search appeals
 exports.search = [
-  //auth, kept disabled for home page search, ideally we need another route for this
+  auth,
   function (req, res) {
     handleSearch(req, res, Appeal);
+  },
+];
+
+// returns most recent 10 open appeals
+exports.fetchAppeals = [
+  function (req, res) {
+    handleSearch(req, res, Appeal, { query: {}, limit: 10, page: 1 });
   },
 ];
 

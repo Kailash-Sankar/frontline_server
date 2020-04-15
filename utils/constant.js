@@ -8,4 +8,5 @@ exports.excludeKeys = {
   "services.values._id": 0,
   "services._id": 0,
   ref: 0,
+  tags: 0,
 };
