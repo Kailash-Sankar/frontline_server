@@ -4,12 +4,15 @@ const apiResponse = require("../helpers/apiResponse");
 const { exportLimit, excludeKeys } = require("./constant");
 
 // handle standard report api
-function handleSearch(req, res, Model) {
+function handleSearch(req, res, Model, options) {
   try {
-    const parsedData = parseQueryData(req.body.query);
+    // override for custom requirments
+    const body = options ? options : req.body;
+
+    const parsedData = parseQueryData(body.query);
     const query = buildQuery(parsedData);
-    const limit = formatQueryLimit(req.body.limit);
-    const page = req.body.page || 1;
+    const limit = formatQueryLimit(body.limit);
+    const page = body.page || 1;
 
     //console.log("search", query, limit, page);
 
