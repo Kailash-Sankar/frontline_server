@@ -33,7 +33,11 @@ exports.search = [
 // returns most recent 10 open appeals
 exports.fetchAppeals = [
   function (req, res) {
-    handleSearch(req, res, Appeal, { query: {}, limit: 10, page: 1 });
+    handleSearch(req, res, Appeal, {
+      query: { status: "open" },
+      limit: 10,
+      page: 1,
+    });
   },
 ];
 
