@@ -45,6 +45,7 @@ We use GitHub issues to track public bugs. Report a bug by opening a new issue, 
 
 - 2 spaces for indentation rather than tabs
 - Run `npm run lint` for style unification, hooks are also in place to ensure linting
+- project follows this [branching model](https://nvie.com/posts/a-successful-git-branching-model/)
 
 ## License
 
