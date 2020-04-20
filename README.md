@@ -42,6 +42,7 @@
 Created with boilterplate: [rest-api-nodejs-mongodb](https://github.com/maitraysuthar/rest-api-nodejs-mongodb)
 
 ## Contributors ✨
+[Contribution Guidelines](CONTRIBUTING.md)
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
