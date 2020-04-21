@@ -62,12 +62,11 @@ const VolunteerModel = new Schema(
     },
 
     notes: { type: String, required: false },
-    publicise: { type: String, required: false, default: "n" },
     ref: {
       type: { appeal_id: { type: String, required: false } },
       required: false,
     },
-    
+
     status: { type: String, required: true, default: "open" },
   },
   { timestamps: true }
