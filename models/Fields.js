@@ -39,6 +39,8 @@ const requestFields = [
   "region",
   "pin",
   "desc",
+  "poc",
+  "persons",
 ];
 
 // fields which are only applicable to queries

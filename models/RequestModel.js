@@ -12,7 +12,10 @@ const RequestModel = new Schema(
     address: { type: String, required: false },
     area: { type: String, required: true },
     region: { type: [String], required: true },
+
     pin: { type: String, required: true },
+    poc: { type: Number, required: false },
+    persons: { type: Number, required: true },
 
     desc: { type: String, required: true },
     status: { type: String, required: true, default: "open" },
