@@ -6,7 +6,6 @@ const volunteerFields = [
   "name",
   "email",
   "mobile",
-  "co_mobile",
   "address",
   "region",
   "pin",
@@ -20,27 +19,19 @@ const volunteerFields = [
   "ref",
 ];
 
-const appealFields = [
-  "act",
-  "region",
-  "pin",
-  "services",
-  "desc",
-  "tags",
-];
+const appealFields = ["act", "region", "pin", "services", "desc", "tags"];
 
 const requestFields = [
   "act",
   "name",
   "mobile",
-  "co_mobile",
   "address",
   "area",
   "region",
   "pin",
   "desc",
-  "poc",
-  "persons",
+  "poc_mobile",
+  "nop",
 ];
 
 // fields which are only applicable to queries
