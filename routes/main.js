@@ -2,6 +2,7 @@ var express = require("express");
 const MainController = require("../controllers/MainController");
 const AppealController = require("../controllers/AppealController");
 const RequestController = require("../controllers/RequestController");
+const NgoController = require("../controllers/NgoController");
 
 var router = express.Router();
 
@@ -42,5 +43,17 @@ router.post("/request/export", RequestController.export);
 router.get("/request/status", RequestController.status);
 // Update the status of the request
 router.put("/request/update/:id", RequestController.updateStatus);
+
+// --- NGO ---
+// save
+router.post("/ngo", NgoController.NgoStore);
+// search
+router.post("/ngo/search", NgoController.search);
+// export
+router.post("/ngo/export", NgoController.export);
+// overall status
+router.get("/ngo/status", NgoController.status);
+// Update the status of a appeal
+router.put("/ngo/update/:id", NgoController.updateStatus);
 
 module.exports = router;

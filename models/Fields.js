@@ -35,6 +35,21 @@ const requestFields = [
   "nop",
 ];
 
+const ngoFields = [
+  "act",
+  "name",
+  "email",
+  "mobile",
+  "alt_mob",
+  "address",
+  "reg",
+  "person",
+  "region",
+  "bbmp",
+  "nov",
+  "covid19",
+];
+
 // fields which are only applicable to queries
 const queryFields = ["createdAt", "status"];
 
@@ -52,6 +67,7 @@ const actMap = {
   kind: volunteerFields,
   appeal: appealFields,
   request: requestFields,
+  ngo: ngoFields,
   all: allFields,
 };
 
