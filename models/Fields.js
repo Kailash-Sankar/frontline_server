@@ -31,6 +31,7 @@ const requestFields = [
   "pin",
   "desc",
   "poc_mobile",
+  "poc_name",
   "nop",
 ];
 
