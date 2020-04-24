@@ -17,21 +17,13 @@ const NgoModel = new Schema(
     person: { type: String, required: true }, // NGO's point of contact (nodal person)
 
     region: { type: [String], required: true }, // Operating districts
-    bbmp: {
-      type: {
-        wards: { type: [String] },
+    bbmp: [
+      {
+        zone: { type: String },
+        ward: { type: String },
         pincodes: { type: [Number] },
-        details: {
-          type: [
-            {
-              zone: { type: String },
-              ward: { type: String },
-              pincodes: { type: [Number] },
-            }
-          ]
-        },
-      },
-    }, // Areas operating in Bangalore Urban (BBMP)
+      }
+    ], // Areas operating in Bangalore Urban (BBMP)
 
     nov: { type: Number, required: true }, // Number of volunteers available
     covid19: { type: String, required: true }, // Activities undertaken for covid 19
