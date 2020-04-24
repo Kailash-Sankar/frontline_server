@@ -13,7 +13,7 @@ const RequestModel = new Schema(
     area: { type: String, required: true },
     region: { type: [String], required: true },
 
-    pin: { type: String, required: true },
+    pin: { type: String, required: false },
     poc_mobile: { type: Number, required: false },
     nop: { type: Number, required: true },
 
