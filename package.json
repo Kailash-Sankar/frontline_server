@@ -23,7 +23,7 @@
     "mongoose-paginate": "^5.0.3",
     "morgan": "~1.10.0",
     "nodemailer": "^6.4.6",
-    "uq-id": "0.0.2"
+    "uq-id": "0.0.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",
