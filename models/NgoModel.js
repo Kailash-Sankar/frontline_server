@@ -9,7 +9,7 @@ const NgoModel = new Schema(
 
     name: { type: String, required: true }, // NGO's name
     email: { type: String, required: true },
-    mobile: { type: Number, require: true },
+    mobile: { type: Number, required: true },
     alt_mob: { type: Number },
 
     address: { type: String, required: false }, // NGO's address

@@ -6,23 +6,40 @@ const auth = require("../middlewares/jwt");
 var mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
 
+// helpers
+const mailer = require("../helpers/mailer");
+const {
+  successResponseWithData,
+  asyncH
+} = require("../helpers/apiResponse");
+
 const {
   handleSearch,
   handleExport,
-  handleSave,
+  handleSaveAsync,
   handleStatus,
   handleStatusUpdate,
 } = require("../utils");
 
 // create a new ngo record
 exports.NgoStore = [
-  //auth,
   body("mobile", "Mobile must not be empty.").isLength({ min: 1 }).trim(),
   body("name", "Name must not be empty.").isLength({ min: 1 }).trim(),
   body("email", "Email must not be empty.").isLength({ min: 1 }).trim(),
-  (req, res) => {
-    handleSave(req, res, Ngo);
-  },
+  asyncH(async (req, res, next) => {
+    await handleSaveAsync(req, res, next, Ngo);
+    await mailer.send(
+      'rtkanan@gmail.com',
+      'rtkanan@gmail.com',
+      'Hello',
+      '<b>Hello world</b>'
+    );
+    return successResponseWithData(
+      res,
+      "Record added successfully.",
+      {}
+    );
+  }),
 ];
 
 exports.search = [
@@ -40,14 +57,6 @@ exports.export = [
   },
 ];
 
-// TODO: not used for now
-exports.NgoStatus = [
-  function (req, res) {
-    const query = [{ $group: { _id: "$mode", nov: { $sum: 1 } } }];
-    handleStatus(res, query, Ngo);
-  },
-];
-
 exports.status = [
   function (req, res) {
     const query = [{ $group: { _id: "$status", status: { $sum: 1 } } }];
@@ -55,7 +64,7 @@ exports.status = [
   },
 ];
 
-// Update the status of a record
+// Verify the NGO Registration details
 exports.updateStatus = [
   auth,
   function (req, res) {

@@ -1,6 +1,7 @@
 const apiResponse = require("../helpers/apiResponse");
 const { parseFormData, valErrorHandler } = require("./helper");
 const { validationResult } = require("express-validator");
+const { ValidationError } = require("./customError")
 
 // save standard form data
 function handleSave(req, res, Model) {
@@ -29,6 +30,27 @@ function handleSave(req, res, Model) {
   }
 }
 
+// validate form fields
+function validateFormData(req) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new ValidationError(errors.array())
+  }
+}
+
+// save form fields
+async function saveForm(req, res, next, Model) {
+  const parsedData = parseFormData(req.body);
+  let Obj = new Model(parsedData);
+  await Obj.save()
+}
+
+async function handleSaveAsync(req, res, next, Model) {
+  validateFormData(req);
+  await saveForm(req, res, next, Model)
+}
+
 module.exports = {
   handleSave,
+  handleSaveAsync,
 };
