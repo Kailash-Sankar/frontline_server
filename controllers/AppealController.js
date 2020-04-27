@@ -51,6 +51,7 @@ exports.export = [
 
 // get count grouped by status
 exports.status = [
+  auth,
   function (req, res) {
     const query = [{ $group: { _id: "$status", status: { $sum: 1 } } }];
     handleStatus(res, query, Appeal);
