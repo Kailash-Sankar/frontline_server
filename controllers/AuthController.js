@@ -6,9 +6,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const auth = require("../middlewares/jwt");
 
+const { authorizeRole } = require("../helpers/authorize");
+
 exports.register = [
   auth,
-  // Validate fields.
+  authorizeRole(["admin"]),
+  // Validate fields
   body("firstName")
     .isLength({ min: 1 })
     .trim()
@@ -45,14 +48,6 @@ exports.register = [
   // Process request after validation and sanitization.
   (req, res) => {
     try {
-      // check if user is authorized to create new accounts
-      if (req.user.role != "admin") {
-        return apiResponse.unauthorizedResponse(
-          res,
-          "Missing privileges. Please contact admin."
-        );
-      }
-
       // Extract the validation errors from a request.
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -190,6 +185,7 @@ exports.check = [
           _id: req.user._id,
           name: req.user.name,
           email: req.user.email,
+          role: req.user.role,
         };
         return apiResponse.successResponseWithData(
           res,
