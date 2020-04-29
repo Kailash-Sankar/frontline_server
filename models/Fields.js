@@ -48,6 +48,7 @@ const ngoFields = [
   "bbmp",
   "nov",
   "covid19",
+  "vcode"
 ];
 
 // fields which are only applicable to queries

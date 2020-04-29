@@ -28,6 +28,8 @@ const NgoModel = new Schema(
     nov: { type: Number, required: true }, // Number of volunteers available
     covid19: { type: String, required: true }, // Activities undertaken for covid 19
     status: { type: String, required: true, enum: ['new', 'verified'], default: 'new' },
+
+    vcode: { type: String, required: true },
   },
   { timestamps: true }
 );
