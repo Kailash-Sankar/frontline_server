@@ -7,11 +7,11 @@ var mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
 
 // helpers
-const mailer = require("../helpers/mailer");
 const {
   successResponseWithData,
   asyncH
 } = require("../helpers/apiResponse");
+const { sendVerMail } = require("../services/ngo")
 
 const {
   handleSearch,
@@ -28,12 +28,14 @@ exports.NgoStore = [
   body("email", "Email must not be empty.").isLength({ min: 1 }).trim(),
   asyncH(async (req, res, next) => {
     await handleSaveAsync(req, res, next, Ngo);
-    await mailer.send(
-      'rtkanan@gmail.com',
-      'rtkanan@gmail.com',
-      'Hello',
-      '<b>Hello world</b>'
-    );
+    // Todo: get the email and name from the saved object
+    // Todo: Generate random token
+    let options = {
+      toList: ['rtkanan@gmail.com'],
+      name: 'Kannan',
+      token: 'abcd1234'
+    }
+    await sendVerMail(options)
     return successResponseWithData(
       res,
       "Record added successfully.",
