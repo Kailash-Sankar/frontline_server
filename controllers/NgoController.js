@@ -27,15 +27,18 @@ exports.NgoStore = [
   body("name", "Name must not be empty.").isLength({ min: 1 }).trim(),
   body("email", "Email must not be empty.").isLength({ min: 1 }).trim(),
   asyncH(async (req, res, next) => {
-    await handleSaveAsync(req, res, next, Ngo);
-    // Todo: get the email and name from the saved object
     // Todo: Generate random token
+    req.body.vcode = 'abcd1234';
+    await handleSaveAsync(req, res, next, Ngo);
+
+    // Send verification email to the NGO
     let options = {
-      toList: ['rtkanan@gmail.com'],
-      name: 'Kannan',
-      token: 'abcd1234'
+      toList: [req.body.email],
+      name: req.body.name,
+      token: req.body.vcode
     }
     await sendVerMail(options)
+
     return successResponseWithData(
       res,
       "Record added successfully.",
