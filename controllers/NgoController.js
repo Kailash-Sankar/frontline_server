@@ -2,6 +2,7 @@ const Ngo = require("../models/NgoModel");
 
 const { body } = require("express-validator");
 const auth = require("../middlewares/jwt");
+const { generateId } = require("uq-id");
 
 var mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
@@ -11,13 +12,12 @@ const {
   successResponseWithData,
   asyncH
 } = require("../helpers/apiResponse");
-const { sendVerMail } = require("../services/ngo")
+const { sendVerMail, createNgoUser } = require("../services")
 
 const {
   handleSearch,
   handleExport,
   handleSaveAsync,
-  handleStatus,
   handleStatusUpdate,
 } = require("../utils");
 
@@ -27,8 +27,7 @@ exports.NgoStore = [
   body("name", "Name must not be empty.").isLength({ min: 1 }).trim(),
   body("email", "Email must not be empty.").isLength({ min: 1 }).trim(),
   asyncH(async (req, res, next) => {
-    // Todo: Generate random token
-    req.body.vcode = 'abcd1234';
+    req.body.vcode = generateId();
     await handleSaveAsync(req, res, next, Ngo);
 
     // Send verification email to the NGO
@@ -62,17 +61,28 @@ exports.export = [
   },
 ];
 
-exports.status = [
-  function (req, res) {
-    const query = [{ $group: { _id: "$status", status: { $sum: 1 } } }];
-    handleStatus(res, query, Ngo);
-  },
-];
-
 // Verify the NGO Registration details
 exports.updateStatus = [
   auth,
   function (req, res) {
+    // Todo: check email verification and create user
     handleStatusUpdate(req, res, Ngo);
   },
+];
+
+exports.verifyEmail = [
+  asyncH(async (req, res) => {
+    // req.body.email_verified = false
+    const ngo = await Ngo.findOneAndUpdate(
+      req.body,
+      { email_verified: true, vcode: null },
+      { new: true },
+    );
+    await createNgoUser(ngo)
+    return successResponseWithData(
+      res,
+      "Record added successfully.",
+      ngo || {}
+    );
+  })
 ];
