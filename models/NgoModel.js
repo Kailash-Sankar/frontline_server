@@ -30,6 +30,7 @@ const NgoModel = new Schema(
     status: { type: String, required: true, enum: ['new', 'verified'], default: 'new' },
 
     vcode: { type: String, required: true },
+    email_verified: { type: Boolean, required: true, default: false}
   },
   { timestamps: true }
 );
