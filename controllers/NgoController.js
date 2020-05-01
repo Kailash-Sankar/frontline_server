@@ -3,6 +3,7 @@ const Ngo = require("../models/NgoModel");
 const { body } = require("express-validator");
 const auth = require("../middlewares/jwt");
 const { generateId } = require("uq-id");
+const params = require('params');
 
 var mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
@@ -73,7 +74,7 @@ exports.updateStatus = [
 
 exports.verifyEmail = [
   asyncH(async (req, res) => {
-    let query = req.body
+    let query = params(req.body).only(['email', 'vcode'])
     query.email_verified = false
     query.email = Buffer.from(query.email, 'base64').toString('ascii');
 
