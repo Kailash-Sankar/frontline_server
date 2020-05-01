@@ -28,9 +28,9 @@ exports.NgoStore = [
   body("mobile", "Mobile must not be empty.").isLength({ min: 1 }).trim(),
   body("name", "Name must not be empty.").isLength({ min: 1 }).trim(),
   body("email", "Email must not be empty.").isLength({ min: 1 }).trim(),
-  asyncH(async (req, res, next) => {
+  asyncH(async (req, res) => {
     req.body.vcode = generateId();
-    await handleSaveAsync(req, res, next, Ngo);
+    await handleSaveAsync(req, Ngo);
 
     // Send verification email to the NGO
     let options = {
