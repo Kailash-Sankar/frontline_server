@@ -50,6 +50,7 @@ const ngoFields = [
   "covid19",
   "vcode"
 ];
+module.exports.ngoFields = ngoFields
 
 // fields which are only applicable to queries
 const queryFields = ["createdAt", "status"];
