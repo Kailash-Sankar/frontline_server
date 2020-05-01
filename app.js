@@ -53,6 +53,8 @@ app.all("*", function (req, res) {
 app.use((err, req, res, next) => {
   if (err.name == "UnauthorizedError") {
     return apiResponse.unauthorizedResponse(res, err.message);
+  } else if (err.name == "ValidationError") {
+    return apiResponse.validationErrorWithData(res, err.message)
   } else {
     if (res.headersSent) {
       return next(err)

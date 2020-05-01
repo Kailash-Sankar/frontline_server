@@ -11,7 +11,6 @@ mongoose.set("useFindAndModify", false);
 // helpers
 const {
   successResponseWithData,
-  validationErrorWithData,
   asyncH
 } = require("../helpers/apiResponse");
 const { sendVerMail, createNgoUser } = require("../services")
@@ -20,7 +19,7 @@ const {
   handleSearch,
   handleExport,
   handleSaveAsync,
-  handleStatusUpdate,
+  updateOne
 } = require("../utils");
 
 // create a new ngo record
@@ -63,13 +62,22 @@ exports.export = [
   },
 ];
 
-// Verify the NGO Registration details
+// Verify the NGO Registration details (Update Status)
 exports.updateStatus = [
   auth,
-  function (req, res) {
-    // Todo: check email verification and create user
-    handleStatusUpdate(req, res, Ngo);
-  },
+  asyncH(async (req, res) => {
+    const update = { status: req.body.status }
+    const query = { _id: req.params.id }
+
+    const ngo = await updateOne(Ngo, query, update)
+    await createNgoUser(ngo)
+
+    return successResponseWithData(
+      res,
+      "Updated the status successfully.",
+      ngo || {}
+    );
+  }),
 ];
 
 exports.verifyEmail = [
@@ -77,24 +85,14 @@ exports.verifyEmail = [
     let query = params(req.body).only(['email', 'vcode'])
     query.email_verified = false
     query.email = Buffer.from(query.email, 'base64').toString('ascii');
+    const update = { email_verified: true, vcode: "null" }
 
-    const ngo = await Ngo.findOneAndUpdate(
-      query,
-      { email_verified: true, vcode: null },
-      { new: true },
-    );
-
-    if(!ngo) {
-      return validationErrorWithData(
-        res,
-        "Email and token are not matching or email is already verified"
-      )
-    }
-
+    const ngo = await updateOne(Ngo, query, update)
     await createNgoUser(ngo)
+
     return successResponseWithData(
       res,
-      "Record added successfully.",
+      "Verified the email successfully.",
       ngo || {}
     );
   })
