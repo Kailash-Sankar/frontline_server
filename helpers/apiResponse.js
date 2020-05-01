@@ -10,7 +10,7 @@ exports.successResponseWithData = function(res, msg, data) {
   var resData = {
     status: 1,
     message: msg,
-    data: data
+    data: data || {}
   };
   return res.status(200).json(resData);
 };
