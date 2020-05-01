@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const { complexId } = require("uq-id");
 
 async function sendVerMail({toList, name, token}) {
-  const {subject, content} = accountVerification(name, token)
+  const {subject, content} = accountVerification(name, toList, token)
   const mailOpts = {
     to: toList,
     subject: subject,

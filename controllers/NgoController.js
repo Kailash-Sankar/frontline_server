@@ -10,6 +10,7 @@ mongoose.set("useFindAndModify", false);
 // helpers
 const {
   successResponseWithData,
+  validationErrorWithData,
   asyncH
 } = require("../helpers/apiResponse");
 const { sendVerMail, createNgoUser } = require("../services")
@@ -72,12 +73,23 @@ exports.updateStatus = [
 
 exports.verifyEmail = [
   asyncH(async (req, res) => {
-    // req.body.email_verified = false
+    let query = req.body
+    query.email_verified = false
+    query.email = Buffer.from(query.email, 'base64').toString('ascii');
+
     const ngo = await Ngo.findOneAndUpdate(
-      req.body,
+      query,
       { email_verified: true, vcode: null },
       { new: true },
     );
+
+    if(!ngo) {
+      return validationErrorWithData(
+        res,
+        "Email and token are not matching or email is already verified"
+      )
+    }
+
     await createNgoUser(ngo)
     return successResponseWithData(
       res,

@@ -1,6 +1,8 @@
-exports.accountVerification = function(name, token) {
+exports.accountVerification = function(name, email, token) {
+  const url = process.env.CLIENT_EMAIL_VERIFY_URL
+  const email_base64 = Buffer.from(email).toString('base64');
   let content = `Hi ${name},<br/><br/>
-  Click the <a href='http://localhost:3080/api/ngo/verify/email/${token}'>verification link</a> to activate your account.`
+  Click the <a href='${url}/${email_base64}/${token}'>verification link</a> to activate your account.`
 
   return {
     'subject' : 'Sankalpa: Email Verification',
