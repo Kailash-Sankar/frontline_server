@@ -16,7 +16,7 @@ function individualPipeline(ctx) {
 function broadcastPipeline(clients) {
   let idx = 0;
   const interval = setInterval(() => {
-    for (c of clients.values()) {
+    for (let c of clients.values()) {
       c.send(`broadcast message ${idx}`);
     }
     idx++;

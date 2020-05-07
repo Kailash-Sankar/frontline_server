@@ -5,7 +5,8 @@ function ngoNotificationPipeline() {
   const wss = new WebSocket.Server({ noServer: true });
 
   // setup broadcast pipeline
-  const broadcastInterval = broadcastPipeline(wss.clients);
+  // runs always, one instance per server
+  broadcastPipeline(wss.clients);
 
   // establish connection
   wss.on("connection", (ctx) => {
@@ -21,7 +22,7 @@ function ngoNotificationPipeline() {
     //  ctx.send(`you said, ${message}`);
     //});
 
-    ctx.on("close", (client) => {
+    ctx.on("close", () => {
       console.log("closed", wss.clients.size);
       clearInterval(interval);
     });
