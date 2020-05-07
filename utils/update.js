@@ -1,4 +1,5 @@
-const apiResponse = require("../helpers/apiResponse");
+const { apiResponse } = require("../helpers/apiResponse");
+const { ValidationError } = require("./customError")
 
 function handleStatusUpdate(req, res, Model) {
   try {
@@ -28,6 +29,17 @@ function handleStatusUpdate(req, res, Model) {
   }
 }
 
+async function updateOne(Model, query, update) {
+  let record = await Model.findOne(query)
+  if(!record) {
+    throw new ValidationError("Record not found!")
+  }
+  record.set(update);
+  record = await record.save()
+  return record
+}
+
 module.exports = {
   handleStatusUpdate,
+  updateOne,
 };

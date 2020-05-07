@@ -1,6 +1,9 @@
+const params = require('params');
 const apiResponse = require("../helpers/apiResponse");
 const { parseFormData, valErrorHandler } = require("./helper");
 const { validationResult } = require("express-validator");
+const { ValidationError } = require("./customError")
+const { ngoFields } = require("../models/Fields")
 
 // save standard form data
 function handleSave(req, res, Model) {
@@ -29,6 +32,27 @@ function handleSave(req, res, Model) {
   }
 }
 
+// validate form fields
+function validateFormData(req) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new ValidationError(errors.array())
+  }
+}
+
+// save form fields
+async function saveForm(req, Model) {
+  const parsedData = params(req.body).only(ngoFields)
+  let Obj = new Model(parsedData);
+  await Obj.save()
+}
+
+async function handleSaveAsync(req, Model) {
+  validateFormData(req);
+  await saveForm(req, Model)
+}
+
 module.exports = {
   handleSave,
+  handleSaveAsync,
 };
