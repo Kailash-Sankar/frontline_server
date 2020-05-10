@@ -1,18 +1,25 @@
 const { authenticateWS } = require("../middlewares/jwt");
-const ngoNotificationPipeline = require("./ngo");
+const demoPipeline = require("./ngo");
+const url = require("url");
 
 // define all socket types and handling functions here
 function setupSocketHandlers() {
   return {
-    ngo_notification: ngoNotificationPipeline(),
+    "/demo": demoPipeline(),
   };
 }
 
 // extract connection type from url
 // we'll only consider one param for type of socket
-const getConnectionType = (path) => {
+const getParams = (request) => {
   try {
-    return path.split("=")[1].trim();
+    const parsed = url.parse(request.url);
+    const res = { path: parsed.pathname };
+    parsed.query.split("&").forEach((param) => {
+      const [k, v] = param.split("=");
+      res[k] = v;
+    });
+    return res;
   } catch (err) {
     return "na";
   }
@@ -27,16 +34,13 @@ function setupWebSocket(server) {
   // authenticate user using the same jwt
   server.on("upgrade", function upgrade(request, socket, head) {
     try {
-      const connectionType = getConnectionType(request.url);
-      if (!(connectionType in wssHandler)) {
-        throw "Unknow conneciton type";
+      const { path, token } = getParams(request);
+      if (!(path in wssHandler)) {
+        throw `Unknow conneciton type ${path}`;
       }
-
-      const protocolHeader = request.headers["sec-websocket-protocol"];
-
       // authenticate client
-      if (protocolHeader && protocolHeader.length > 0) {
-        const req = { token: protocolHeader.trim() };
+      if (token) {
+        const req = { token };
 
         authenticateWS(req, {}, (err) => {
           if (err) {
@@ -44,11 +48,13 @@ function setupWebSocket(server) {
           }
           // user information will be available in req object
           // allow upgrade to web socket
-          const wss = wssHandler[connectionType];
+          const wss = wssHandler[path];
           wss.handleUpgrade(request, socket, head, function done(ws) {
             wss.emit("connection", ws, request);
           });
         });
+      } else {
+        throw "No token found";
       }
     } catch (err) {
       console.log("upgrade exception", err);

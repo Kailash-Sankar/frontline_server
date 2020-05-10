@@ -1,7 +1,7 @@
 const WebSocket = require("ws");
 const { individualPipeline, broadcastPipeline } = require("./pipeline");
 
-function ngoNotificationPipeline() {
+function demoPipeline() {
   const wss = new WebSocket.Server({ noServer: true });
 
   // setup broadcast pipeline
@@ -15,12 +15,12 @@ function ngoNotificationPipeline() {
     // setup individual pipeline
     const interval = individualPipeline(ctx);
 
-    // NOTE: ignored as we don't have this scenario
     // receive a message
-    //ctx.on("message", (message) => {
-    //  console.log(`Received message => ${message}`);
-    //  ctx.send(`you said, ${message}`);
-    //});
+    ctx.on("message", (message) => {
+      for (let c of wss.clients.values()) {
+        c.send(`echo : ${message} `);
+      }
+    });
 
     ctx.on("close", () => {
       console.log("closed", wss.clients.size);
@@ -33,4 +33,4 @@ function ngoNotificationPipeline() {
   return wss;
 }
 
-module.exports = ngoNotificationPipeline;
+module.exports = demoPipeline;
