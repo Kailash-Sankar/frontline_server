@@ -1,11 +1,13 @@
-const { authenticateWS } = require("../middlewares/jwt");
-const demoPipeline = require("./ngo");
+// const { authenticateWS } = require("../middlewares/jwt");
+const authWebSocketToken = require("../middlewares/ws");
+
+const demoWss = require("./demo");
 const url = require("url");
 
 // define all socket types and handling functions here
 function setupSocketHandlers() {
   return {
-    "/demo": demoPipeline(),
+    "/demo": demoWss(),
   };
 }
 
@@ -32,7 +34,7 @@ function setupWebSocket(server) {
 
   // upgrade will check if we have a way to handle this type of socket
   // authenticate user using the same jwt
-  server.on("upgrade", function upgrade(request, socket, head) {
+  server.on("upgrade", async function upgrade(request, socket, head) {
     try {
       const { path, token } = getParams(request);
       if (!(path in wssHandler)) {
@@ -40,19 +42,14 @@ function setupWebSocket(server) {
       }
       // authenticate client
       if (token) {
-        const req = { token };
-
-        authenticateWS(req, {}, (err) => {
-          if (err) {
-            throw err;
-          }
-          // user information will be available in req object
-          // allow upgrade to web socket
+        const res = await authWebSocketToken(token);
+        if (res && res.user_id) {
+          // allow upgrade
           const wss = wssHandler[path];
           wss.handleUpgrade(request, socket, head, function done(ws) {
             wss.emit("connection", ws, request);
           });
-        });
+        }
       } else {
         throw "No token found";
       }

@@ -17,7 +17,9 @@ function broadcastPipeline(clients) {
   let idx = 0;
   const interval = setInterval(() => {
     for (let c of clients.values()) {
-      c.send(`broadcast message ${idx}`);
+      if (c.is_authenticated) {
+        c.send(`broadcast message ${idx}`);
+      }
     }
     idx++;
   }, 3000);
