@@ -43,6 +43,8 @@ router.post("/request/export", RequestController.export);
 router.get("/request/status", RequestController.status);
 // Update the status of the request
 router.put("/request/update/:id", RequestController.updateStatus);
+// Get the request for given id
+router.get("/request/:id", RequestController.getRequest);
 
 // --- NGO ---
 // save

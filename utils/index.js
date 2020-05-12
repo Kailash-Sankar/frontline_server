@@ -3,6 +3,7 @@ const { handleSave, handleSaveAsync } = require("./save");
 const { handleStatus } = require("./status");
 const { handleStatusUpdate, updateOne } = require("./update");
 const { ValidationError } = require("./customError");
+const { findRecordById, validateAndGetId } = require("./record");
 
 module.exports = {
   handleSearch,
@@ -13,4 +14,6 @@ module.exports = {
   handleStatusUpdate,
   ValidationError,
   updateOne,
+  findRecordById,
+  validateAndGetId
 };
