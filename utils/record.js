@@ -1,8 +1,8 @@
 const { ValidationError } = require("./customError");
 var mongoose = require("mongoose");
 async function findRecordById(req, Model) {
-  let _Id = req.params.id;
-  let record = await Model.findById(_Id);
+  const _Id = req.params.id;
+  const record = await Model.findById(_Id);
   if (!record) {
     throw new ValidationError("Record not found!");
   }
