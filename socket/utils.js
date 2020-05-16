@@ -58,7 +58,7 @@ function setupPing(clients) {
       client.isAlive = false;
       client.ping(() => {});
     }
-  }, 5000);
+  }, 15000);
 
   return interval;
 }
