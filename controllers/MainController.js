@@ -1,7 +1,14 @@
 const Volunteer = require("../models/VolunteerModel");
+const Lookup = require("../models/LookupModel");
 
 const { body } = require("express-validator");
 const auth = require("../middlewares/jwt");
+
+// helpers
+const {
+  successResponseWithData,
+  asyncH
+} = require("../helpers/apiResponse");
 
 var mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
@@ -62,13 +69,14 @@ exports.updateStatus = [
   },
 ];
 
-/*
-    unique mobile number validation is not required now
-    .custom((value, { req }) => {
-      return Volunteer.findOne({ mobile: value }).then((record) => {
-        if (record) {
-          return Promise.reject("This mobile number is already registered.");
-        }
-      });
-    }),
-*/
+exports.lookup = [
+  asyncH(async (req, res) => {
+    const records = await Lookup.find({bbmp_zones : { $exists: true }})
+
+    return successResponseWithData(
+      res,
+      "Operation success",
+      records || {}
+    );
+  })
+]

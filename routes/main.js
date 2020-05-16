@@ -6,6 +6,9 @@ const NgoController = require("../controllers/NgoController");
 
 var router = express.Router();
 
+// --- Fetch Lookups ---
+router.get("/lookup", MainController.lookup)
+
 // --- volunteer and kind ---
 // save
 router.post("/volunteer", MainController.VolunteerStore);
