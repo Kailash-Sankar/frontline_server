@@ -1,8 +1,6 @@
-// const { authenticateWS } = require("../middlewares/jwt");
 const authWebSocketToken = require("../middlewares/ws");
-
 const demoWss = require("./demo");
-const url = require("url");
+const { getParams } = require("./utils");
 
 // define all socket types and handling functions here
 function setupSocketHandlers() {
@@ -10,22 +8,6 @@ function setupSocketHandlers() {
     "/demo": demoWss(),
   };
 }
-
-// extract connection type from url
-// we'll only consider one param for type of socket
-const getParams = (request) => {
-  try {
-    const parsed = url.parse(request.url);
-    const res = { path: parsed.pathname };
-    parsed.query.split("&").forEach((param) => {
-      const [k, v] = param.split("=");
-      res[k] = v;
-    });
-    return res;
-  } catch (err) {
-    return "na";
-  }
-};
 
 // setup websocket server
 function setupWebSocket(server) {

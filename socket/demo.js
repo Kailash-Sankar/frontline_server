@@ -1,7 +1,13 @@
 const WebSocket = require("ws");
-const { authenticateWS } = require("../middlewares/jwt");
-const { individualPipeline, broadcastPipeline } = require("./pipeline");
 
+const {
+  individualPipeline,
+  broadcastPipeline,
+  authHandler,
+  setupPing,
+} = require("./utils");
+
+// websocket handling functions
 function demoWss() {
   const wss = new WebSocket.Server({ noServer: true });
 
@@ -10,33 +16,28 @@ function demoWss() {
   // establish connection
   wss.on("connection", (ctx) => {
     console.log("connected", wss.clients.size);
-    ctx.is_authenticated = false;
 
-    // receive a message
-    ctx.on("message", (message) => {
-      const data = JSON.parse(message);
-      if (data && data.type == "jwt") {
-        authenticateWS({ token: data.token }, {}, (err) => {
-          if (err) {
-            ctx.terminate();
-            console.log("jwt validation failed");
-          }
-          // user information will be available in req object
-          // allow upgrade to web socket
-          ctx.send("authentication successfull");
-          ctx.is_authenticated = true;
-          register(ctx);
-        });
-      }
-    });
+    // setup authentication
+    authHandler(ctx, registerActions);
 
     ctx.send("connection established");
+
+    ctx.on("pong", () => {
+      ctx.isAlive = true;
+    });
   });
+
+  // handle stalled connections
+  setupPing(wss.clients);
 
   return wss;
 }
 
-function register(ctx) {
+// this function is invoked after successfull auth
+function registerActions(ctx) {
+  // turn off jwt verfication message event
+  ctx.off("message", ctx.authenticate);
+
   // setup individual pipeline
   const interval = individualPipeline(ctx);
 
@@ -45,8 +46,10 @@ function register(ctx) {
     clearInterval(interval);
   });
 
+  // register new message handler
   ctx.on("message", (message) => {
     ctx.send(`echo: ${message}`);
+    console.log(ctx.isAlive);
   });
 }
 
