@@ -20,7 +20,7 @@ function setupWebSocket(server) {
     try {
       const { path, token } = getParams(request);
       if (!(path in wssHandler)) {
-        throw `Unknow conneciton type ${path}`;
+        throw `Unknow conneciton path ${path}`;
       }
       // authenticate client
       if (token) {

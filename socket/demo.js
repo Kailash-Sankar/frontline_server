@@ -49,7 +49,6 @@ function registerActions(ctx) {
   // register new message handler
   ctx.on("message", (message) => {
     ctx.send(`echo: ${message}`);
-    console.log(ctx.isAlive);
   });
 }
 
