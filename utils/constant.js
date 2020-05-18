@@ -10,3 +10,10 @@ exports.excludeKeys = {
   ref: 0,
   tags: 0,
 };
+
+exports.includeNgoFields = {
+  act: 1,
+  name: 1,
+  region: 1,
+  bbmp: 1
+};

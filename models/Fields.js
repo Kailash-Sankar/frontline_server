@@ -89,7 +89,7 @@ exports.getQueryFieldList = (act = "all") => {
 
 // volunteer query formats
 exports.queryFormats = {
-  region: "in",
+  region: "all",
   service_communications: "in",
   service_entrepreneurial: "in",
   service_essential: "in",
@@ -101,4 +101,5 @@ exports.queryFieldFn = {
   default: (value) => value,
   in: (value) => ({ $in: value }),
   between: (value) => ({ $gte: value[0], $lt: value[1] }),
+  all : (value) => ({ $all:value }),
 };

@@ -1,4 +1,5 @@
 const Ngo = require("../models/NgoModel");
+const Request = require("../models/RequestModel");
 
 const { body } = require("express-validator");
 const auth = require("../middlewares/jwt");
@@ -19,7 +20,8 @@ const {
   handleSearch,
   handleExport,
   handleSaveAsync,
-  updateOne
+  updateOne,
+  handleFindReturn
 } = require("../utils");
 
 // create a new ngo record
@@ -96,4 +98,17 @@ exports.verifyEmail = [
       ngo || {}
     );
   })
+];
+
+exports.NgoReq=[
+  auth,
+  async function(req, res){
+    var NgoData = await handleFindReturn(req, res, Ngo);
+    req = {};
+    req.body = {};
+    req.body.query = {};
+    req.body.query.region = NgoData[0].region;
+    req.body.query.act = 'request';
+    handleSearch(req, res,Request);
+  }
 ];

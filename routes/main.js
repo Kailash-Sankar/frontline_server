@@ -57,5 +57,6 @@ router.post("/ngo/export", NgoController.export);
 router.put("/ngo/update/:id", NgoController.updateStatus);
 // Verify NGO's email
 router.put("/ngo/verify/email", NgoController.verifyEmail);
-
+// Ngo request
+router.post("/ngo/NgoReq", NgoController.NgoReq);
 module.exports = router;

@@ -1,6 +1,6 @@
 const { parseQueryData, formatQueryLimit, buildQuery } = require("./helper");
 const apiResponse = require("../helpers/apiResponse");
-
+const { exportLimit, excludeKeys, includeNgoFields } = require("./constant");
 const { exportLimit, excludeKeys } = require("./constant");
 
 // handle standard report api
@@ -69,7 +69,29 @@ function handleExport(req, res, Model) {
   }
 }
 
+async function handleFindReturn(req, res, Model) {
+  try {
+    const parsedData = parseQueryData(req.body.query);
+    const query = buildQuery(parsedData);
+    var records = await Model.find(query,includeNgoFields).limit(exportLimit);
+    if (records.length > 0) {
+      return records;
+    } else {
+      return apiResponse.successResponseWithData(
+        res,
+        "Operation success",
+        []
+      );
+    }
+
+  } catch (err) {
+    console.log("errors", err);
+    return apiResponse.ErrorResponse(res, err);
+  }
+}
+
 module.exports = {
   handleSearch,
   handleExport,
+  handleFindReturn
 };
