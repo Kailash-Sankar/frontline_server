@@ -1,7 +1,6 @@
 const { parseQueryData, formatQueryLimit, buildQuery } = require("./helper");
 const apiResponse = require("../helpers/apiResponse");
 const { exportLimit, excludeKeys, includeNgoFields } = require("./constant");
-const { exportLimit, excludeKeys } = require("./constant");
 
 // handle standard report api
 function handleSearch(req, res, Model, options) {
