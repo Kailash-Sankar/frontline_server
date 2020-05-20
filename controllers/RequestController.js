@@ -1,8 +1,8 @@
 const Request = require("../models/RequestModel");
 
-const { body, param  } = require("express-validator");
+const { body, param } = require("express-validator");
 const auth = require("../middlewares/jwt");
-
+const params = require("params");
 var mongoose = require("mongoose");
 mongoose.set("useFindAndModify", false);
 
@@ -14,10 +14,11 @@ const {
   handleStatusUpdate,
   findRecordById,
   validateAndGetId,
+  paginateRecords
 } = require("../utils");
 
 // helpers
-const { successResponseWithData, asyncH } = require("../helpers/apiResponse");
+const { successResponseWithData, asyncH , ErrorResponse} = require("../helpers/apiResponse");
 // create a new request record
 exports.RequestStore = [
   body("region", "Region must not be empty").isLength({ min: 1 }),
@@ -68,5 +69,31 @@ exports.getRequest = [
   asyncH(async (req, res) => {
     const request = await findRecordById(req, Request);
     return successResponseWithData(res, "Record found successfully.", request);
+  }),
+];
+
+exports.searchMobile = [
+  asyncH(async (req, res) => {
+    const body = params(req.body).only("mobile_number", "limit", "page");
+
+    const query = {
+      $or: [{ poc_mobile: body.mobile_number }, { mobile: body.mobile_number }],
+    };
+
+    const records = await paginateRecords(
+      Request,
+      query,
+      body.limit,
+      body.page
+    );
+    if (records.total > 0) {
+      return successResponseWithData(
+        res,
+        "Record found successfully.",
+        records
+      );
+    } else {
+      return ErrorResponse(res, "Record Not found!.");
+    }
   }),
 ];
