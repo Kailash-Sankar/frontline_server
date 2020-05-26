@@ -53,9 +53,9 @@ router.post("/ngo", NgoController.NgoStore);
 router.post("/ngo/search", NgoController.search);
 // export
 router.post("/ngo/export", NgoController.export);
-// Update the status of a appeal
-router.put("/ngo/update/:id", NgoController.updateStatus);
+// Update the status of the NGO registration
+// router.put("/ngo/update/:id", NgoController.updateStatus); # Commenting out as this functionality is put on temporary hold
 // Verify NGO's email
-router.put("/ngo/verify/email", NgoController.verifyEmail);
+// router.put("/ngo/verify/email", NgoController.verifyEmail); # Commenting out as this functionality is put on temporary hold
 
 module.exports = router;
