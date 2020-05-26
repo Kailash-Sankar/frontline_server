@@ -13,7 +13,7 @@ const {
   successResponseWithData,
   asyncH
 } = require("../helpers/apiResponse");
-const { sendVerMail, createNgoUser } = require("../services")
+const { createNgoUser } = require("../services")
 
 const {
   handleSearch,
@@ -31,13 +31,13 @@ exports.NgoStore = [
     req.body.vcode = generateId();
     await handleSaveAsync(req, Ngo);
 
-    // Send verification email to the NGO
-    let options = {
-      toList: [req.body.email],
-      name: req.body.name,
-      token: req.body.vcode
-    }
-    await sendVerMail(options)
+    // // Send verification email to the NGO
+    // let options = {
+    //   toList: [req.body.email],
+    //   name: req.body.name,
+    //   token: req.body.vcode
+    // }
+    // await sendVerMail(options)
 
     return successResponseWithData(
       res,
