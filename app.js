@@ -14,7 +14,7 @@ var mongoose = require("mongoose");
 mongoose
   .connect(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    //don't show the log when it is test
+    //don't show the log when env is test
     if (process.env.NODE_ENV !== "test") {
       console.log("Connected to %s", MONGODB_URL);
       console.log("App is running ... \n");
@@ -28,7 +28,6 @@ mongoose
 
 var app = express();
 
-//don't show the log when it is test
 if (process.env.NODE_ENV !== "test") {
   app.use(logger("dev"));
 }
