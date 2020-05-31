@@ -1,4 +1,4 @@
-const { handleSearch, handleExport } = require("./report");
+const { handleSearch, handleExport, handleFindReturn } = require("./report");
 const { handleSave, handleSaveAsync } = require("./save");
 const { handleStatus } = require("./status");
 const { handleStatusUpdate, updateOne } = require("./update");
@@ -15,5 +15,6 @@ module.exports = {
   ValidationError,
   updateOne,
   findRecordById,
-  validateAndGetId
+  validateAndGetId,
+  handleFindReturn
 };
