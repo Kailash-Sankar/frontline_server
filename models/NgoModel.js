@@ -19,9 +19,10 @@ const NgoModel = new Schema(
     region: { type: [String], required: true }, // Operating districts
     bbmp: [
       {
+        _id: 0,
         zone: { type: String },
         ward: { type: String },
-        pincodes: { type: [Number] },
+        pincode: { type: Number },
       }
     ], // Areas operating in Bangalore Urban (BBMP)
 
