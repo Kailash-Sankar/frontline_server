@@ -8,4 +8,6 @@ router.post("/login", AuthController.login);
 router.post("/check", AuthController.check);
 router.get("/init", AuthController.init);
 
+router.get("/token/ws", AuthController.generateToken);
+
 module.exports = router;

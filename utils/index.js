@@ -1,12 +1,19 @@
 const { handleSearch, handleExport } = require("./report");
-const { handleSave } = require("./save");
+const { handleSave, handleSaveAsync } = require("./save");
 const { handleStatus } = require("./status");
-const { handleStatusUpdate } = require("./update");
+const { handleStatusUpdate, updateOne } = require("./update");
+const { ValidationError } = require("./customError");
+const { findRecordById, validateAndGetId } = require("./record");
 
 module.exports = {
   handleSearch,
   handleExport,
   handleSave,
+  handleSaveAsync,
   handleStatus,
   handleStatusUpdate,
+  ValidationError,
+  updateOne,
+  findRecordById,
+  validateAndGetId
 };

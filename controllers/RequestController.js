@@ -1,6 +1,6 @@
 const Request = require("../models/RequestModel");
 
-const { body } = require("express-validator");
+const { body, param  } = require("express-validator");
 const auth = require("../middlewares/jwt");
 
 var mongoose = require("mongoose");
@@ -12,8 +12,12 @@ const {
   handleSave,
   handleStatus,
   handleStatusUpdate,
+  findRecordById,
+  validateAndGetId,
 } = require("../utils");
 
+// helpers
+const { successResponseWithData, asyncH } = require("../helpers/apiResponse");
 // create a new request record
 exports.RequestStore = [
   body("region", "Region must not be empty").isLength({ min: 1 }),
@@ -51,4 +55,18 @@ exports.updateStatus = [
   function (req, res) {
     handleStatusUpdate(req, res, Request);
   },
+];
+
+// Get request for given request id
+exports.getRequest = [
+  auth,
+  param("id", "id must not be empty")
+    .isLength({ min: 1 })
+    .customSanitizer((id) => {
+      return validateAndGetId(id);
+    }),
+  asyncH(async (req, res) => {
+    const request = await findRecordById(req, Request);
+    return successResponseWithData(res, "Record found successfully.", request);
+  }),
 ];

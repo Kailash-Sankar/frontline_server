@@ -1,4 +1,6 @@
 const UserModel = require("../models/UserModel");
+const TokenModel = require("../models/TokenModel");
+
 const { body, validationResult } = require("express-validator");
 //helper file to prepare responses.
 const apiResponse = require("../helpers/apiResponse");
@@ -252,6 +254,32 @@ exports.init = [
       }
     } catch (err) {
       console.log("inti error", err);
+      return apiResponse.ErrorResponse(res, err);
+    }
+  },
+];
+
+exports.generateToken = [
+  auth,
+  function (req, res) {
+    try {
+      const tokenObj = new TokenModel({
+        token_type: "ws",
+        user_id: req.user._id,
+      });
+
+      tokenObj.save(function (err) {
+        if (err) {
+          throw err;
+        }
+        return apiResponse.successResponseWithData(
+          res,
+          "Token generated successfully",
+          { token: tokenObj._id }
+        );
+      });
+    } catch (err) {
+      console.log("error", err);
       return apiResponse.ErrorResponse(res, err);
     }
   },
