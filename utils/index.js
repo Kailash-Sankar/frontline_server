@@ -4,6 +4,7 @@ const { handleStatus } = require("./status");
 const { handleStatusUpdate, updateOne } = require("./update");
 const { ValidationError } = require("./customError");
 const { findRecordById, validateAndGetId } = require("./record");
+const { paginateRecords } = require("./paginate");
 
 module.exports = {
   handleSearch,
@@ -15,5 +16,6 @@ module.exports = {
   ValidationError,
   updateOne,
   findRecordById,
-  validateAndGetId
+  validateAndGetId,
+  paginateRecords
 };

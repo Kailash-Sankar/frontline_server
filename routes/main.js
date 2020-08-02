@@ -45,6 +45,8 @@ router.get("/request/status", RequestController.status);
 router.put("/request/update/:id", RequestController.updateStatus);
 // Get the request for given id
 router.get("/request/:id", RequestController.getRequest);
+// Search all the request based on mobile number
+router.get("/request/search/mobile", RequestController.searchMobile);
 
 // --- NGO ---
 // save
